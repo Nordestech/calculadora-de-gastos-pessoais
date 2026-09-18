@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>application</module>
+        <module>ms-usuario</module>
     </modules>
 
     <properties>
