@@ -1,9 +1,6 @@
 package br.com.nordestech.usuario.domain.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -13,6 +10,7 @@ import java.util.UUID;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(exclude = "senha")
+@AllArgsConstructor
 public class Usuario {
 
     @EqualsAndHashCode.Include
@@ -25,4 +23,15 @@ public class Usuario {
     private Set<UUID> despesasId;
     private Set<UUID> cartoesId;
 
+    public Usuario(String email, String senha, String nomeCompleto, LocalDate dataNascimento) {
+        this.email = email;
+        this.senha = senha;
+        this.nomeCompleto = nomeCompleto;
+        this.dataNascimento = dataNascimento;
+    }
+
+
+
+    protected  Usuario() {
+    }
 }
