@@ -1,19 +1,18 @@
 package br.com.nordestech.usuario.domain.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@AllArgsConstructor
+@Builder
 public class Banco {
 
-    @EqualsAndHashCode.Include
     private UUID id;
+    private UUID usuarioId;
     private String nomeBanco;
     private BigDecimal valorDisponivel;
 

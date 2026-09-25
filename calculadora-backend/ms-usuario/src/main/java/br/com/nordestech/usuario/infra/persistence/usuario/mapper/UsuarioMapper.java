@@ -28,17 +28,17 @@ public class UsuarioMapper {
             cartoesId = cartoesUsuario.stream().map(CartaoEntity::getId).collect(Collectors.toSet());
         }
 
-
-        return new Usuario(
-                usuarioEntity.getId(),
-                usuarioEntity.getEmail(),
-                usuarioEntity.getSenha(),
-                usuarioEntity.getNomeCompleto(),
-                usuarioEntity.getDataNascimento(),
-                usuarioEntity.getReceitaUsuario().getId(),
-                despesasId,
-                cartoesId
-        );
+        return Usuario.builder()
+                .id(usuarioEntity.getId())
+                .email(usuarioEntity.getEmail())
+                .senha(usuarioEntity.getSenha())
+                .nomeCompleto(usuarioEntity.getNomeCompleto())
+                .dataNascimento(usuarioEntity.getDataNascimento())
+                .receitaId(usuarioEntity.getReceitaUsuario().getId())
+                .despesasId(despesasId)
+                .cartoesId(cartoesId)
+                .perfis(usuarioEntity.getPerfis())
+                .build();
     }
 
 }

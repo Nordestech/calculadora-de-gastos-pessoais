@@ -1,20 +1,19 @@
 package br.com.nordestech.usuario.domain.model;
 
 import br.com.nordestech.usuario.domain.model.enums.TipoPagamento;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@AllArgsConstructor
+@Builder
 public class Pagamento {
 
-    @EqualsAndHashCode.Include
     private UUID id;
+    private UUID usuarioId;
     private BigDecimal valor;
     private TipoPagamento tipoPagamento;
     private UUID cartaoId;

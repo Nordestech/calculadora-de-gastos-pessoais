@@ -1,20 +1,19 @@
 package br.com.nordestech.usuario.domain.model;
 
 import br.com.nordestech.usuario.domain.model.enums.TipoDespesa;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@AllArgsConstructor
+@Builder
 public class Despesa {
 
-    @EqualsAndHashCode.Include
     private UUID id;
+    private UUID usuarioId;
     private String descricao;
     private TipoDespesa tipoDespesa;
     private UUID pagamentoId;

@@ -1,17 +1,15 @@
 package br.com.nordestech.usuario.domain.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@AllArgsConstructor
+@Builder
 public class Pix {
 
-    @EqualsAndHashCode.Include
     private UUID id;
     private UUID bancoId;
     private String chavePix;

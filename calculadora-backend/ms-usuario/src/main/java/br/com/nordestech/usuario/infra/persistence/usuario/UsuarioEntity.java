@@ -1,5 +1,6 @@
 package br.com.nordestech.usuario.infra.persistence.usuario;
 
+import br.com.nordestech.usuario.domain.model.enums.PerfilEnum;
 import br.com.nordestech.usuario.infra.persistence.cartao.CartaoEntity;
 import br.com.nordestech.usuario.infra.persistence.despesa.DespesaEntity;
 import br.com.nordestech.usuario.infra.persistence.receita.ReceitaEntity;
@@ -45,6 +46,10 @@ public class UsuarioEntity {
     @OneToMany(mappedBy = "usuarioCartoes", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<CartaoEntity> cartoesUsuario;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "perfis")
+    private Set<PerfilEnum> perfis;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -64,7 +69,7 @@ public class UsuarioEntity {
         this.dataNascimento = dataNascimento;
     }
 
-    public UsuarioEntity(String email, String senha, String nomeCompleto, LocalDate dataNascimento, ReceitaEntity receitaUsuario, Set<DespesaEntity> despesasUsuario, Set<CartaoEntity> cartoesUsuario) {
+    public UsuarioEntity(String email, String senha, String nomeCompleto, LocalDate dataNascimento, ReceitaEntity receitaUsuario, Set<DespesaEntity> despesasUsuario, Set<CartaoEntity> cartoesUsuario, Set<PerfilEnum> perfis) {
         this();
         this.email = email;
         this.senha = senha;
@@ -73,6 +78,7 @@ public class UsuarioEntity {
         this.receitaUsuario = receitaUsuario;
         this.despesasUsuario = despesasUsuario;
         this.cartoesUsuario = cartoesUsuario;
+        this.perfis = perfis;
     }
 
 }

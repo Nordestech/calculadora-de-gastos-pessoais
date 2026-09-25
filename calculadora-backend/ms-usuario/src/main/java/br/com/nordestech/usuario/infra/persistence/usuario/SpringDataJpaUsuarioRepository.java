@@ -7,4 +7,5 @@ import java.util.UUID;
 public interface SpringDataJpaUsuarioRepository extends JpaRepository<UsuarioEntity, UUID> {
 
     boolean existsUsuarioEntityByEmailContainingIgnoreCase(String email);
+
 }
