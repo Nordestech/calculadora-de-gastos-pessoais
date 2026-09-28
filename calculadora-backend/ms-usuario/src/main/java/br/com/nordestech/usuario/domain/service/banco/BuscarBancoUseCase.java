@@ -14,10 +14,6 @@ public class BuscarBancoUseCase {
 
     private final BancoRepository repository;
 
-    public Banco buscarBancoPorId(UUID idBanco) {
-        return repository.buscarPorId(idBanco);
-    }
-
     public Set<Banco> buscarBancosPorUsuarioId(UUID idUsuario) {
         return repository.buscarBancosPorUsuarioId(idUsuario);
     }

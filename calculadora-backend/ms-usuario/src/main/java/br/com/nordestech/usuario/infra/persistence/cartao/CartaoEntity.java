@@ -1,7 +1,7 @@
 package br.com.nordestech.usuario.infra.persistence.cartao;
 
 import br.com.nordestech.usuario.domain.model.enums.TipoCartao;
-import br.com.nordestech.usuario.infra.persistence.pagamento.PagamentoEntity;
+import br.com.nordestech.usuario.infra.persistence.banco.BancoEntity;
 import br.com.nordestech.usuario.infra.persistence.usuario.UsuarioEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table
+@Table(name = "CARTOES")
 @AllArgsConstructor
 public class CartaoEntity {
 
@@ -24,8 +24,16 @@ public class CartaoEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id")
+    private UsuarioEntity usuarioCartoes;
+
     @Column(name = "nome_cartao")
     private String nomeCartao;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "banco_id")
+    private BancoEntity bancoCartoes;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipos_cartao")
@@ -37,12 +45,6 @@ public class CartaoEntity {
     @Column(name = "dia_vencimento")
     private Integer diaVencimento;
 
-    @OneToOne(mappedBy = "cartaoPagamento", cascade = CascadeType.ALL)
-    private PagamentoEntity pagamentoCartao;
-
-    @ManyToOne()
-    @JoinColumn(name = "usuario_id")
-    private UsuarioEntity usuarioCartoes;
 
     @Column(name = "updated_At")
     private LocalDateTime updatedAt;

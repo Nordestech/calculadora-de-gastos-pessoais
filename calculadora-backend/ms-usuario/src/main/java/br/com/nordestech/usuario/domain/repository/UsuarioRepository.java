@@ -14,9 +14,10 @@ public interface UsuarioRepository {
 
     Usuario buscarPorEmail(String email);
 
-    Usuario buscarPorId(UUID id);
+    Usuario buscarPorId(UUID idUsuario);
 
-    void deletarUsuarioPorId(UUID id);
+    void deletarUsuarioPorId(UUID idUsuario);
 
     Page<Usuario> buscarTodosUsuarios(Pageable pageable);
+
 }

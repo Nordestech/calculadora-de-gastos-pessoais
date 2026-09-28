@@ -2,15 +2,19 @@ package br.com.nordestech.usuario.infra.persistence.usuario;
 
 import br.com.nordestech.usuario.domain.model.enums.PerfilEnum;
 import br.com.nordestech.usuario.infra.persistence.cartao.CartaoEntity;
-import br.com.nordestech.usuario.infra.persistence.despesa.DespesaEntity;
-import br.com.nordestech.usuario.infra.persistence.receita.ReceitaEntity;
+import br.com.nordestech.usuario.infra.persistence.dinheiro.DinheiroEntity;
+import br.com.nordestech.usuario.infra.persistence.gasto.GastoEntity;
+import br.com.nordestech.usuario.infra.persistence.gastoFixo.GastoFixoEntity;
+import br.com.nordestech.usuario.infra.persistence.pix.PixEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,21 +38,30 @@ public class UsuarioEntity {
     @Column(name = "nome_completo")
     private String nomeCompleto;
 
+    @Column(name = "cpf", unique = true)
+    private String cpf;
+
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
-
-    @OneToOne(mappedBy = "usuarioReceita", cascade = CascadeType.ALL)
-    private ReceitaEntity receitaUsuario;
-
-    @OneToMany(mappedBy = "usuarioDespesas", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<DespesaEntity> despesasUsuario;
-
-    @OneToMany(mappedBy = "usuarioCartoes", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<CartaoEntity> cartoesUsuario;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "perfis")
     private Set<PerfilEnum> perfis;
+
+    @OneToMany(mappedBy = "usuarioPix", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<PixEntity> pix;
+
+    @OneToMany(mappedBy = "usuarioCartoes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<CartaoEntity> cartoes;
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private DinheiroEntity dinheiro;
+
+    @OneToMany(mappedBy = "usuarioGastos", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<GastoEntity> gastos;
+
+    @OneToMany(mappedBy = "usuarioGastosFixos", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<GastoFixoEntity> gastosFixos;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -61,24 +74,18 @@ public class UsuarioEntity {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public UsuarioEntity(String email, String senha, String nomeCompleto, LocalDate dataNascimento) {
+    public UsuarioEntity(String email, String senha, String nomeCompleto, String cpf, LocalDate dataNascimento) {
         this();
         this.email = email;
         this.senha = senha;
         this.nomeCompleto = nomeCompleto;
+        this.cpf = cpf;
         this.dataNascimento = dataNascimento;
-    }
-
-    public UsuarioEntity(String email, String senha, String nomeCompleto, LocalDate dataNascimento, ReceitaEntity receitaUsuario, Set<DespesaEntity> despesasUsuario, Set<CartaoEntity> cartoesUsuario, Set<PerfilEnum> perfis) {
-        this();
-        this.email = email;
-        this.senha = senha;
-        this.nomeCompleto = nomeCompleto;
-        this.dataNascimento = dataNascimento;
-        this.receitaUsuario = receitaUsuario;
-        this.despesasUsuario = despesasUsuario;
-        this.cartoesUsuario = cartoesUsuario;
-        this.perfis = perfis;
+        this.pix = new HashSet<PixEntity>();
+        this.cartoes = new HashSet<CartaoEntity>();
+        this.dinheiro = new DinheiroEntity(BigDecimal.valueOf(0));
+        this.gastos = new HashSet<GastoEntity>();
+        this.gastosFixos = new HashSet<GastoFixoEntity>();
     }
 
 }

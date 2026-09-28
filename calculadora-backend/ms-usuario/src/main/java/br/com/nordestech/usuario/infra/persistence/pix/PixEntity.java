@@ -1,7 +1,7 @@
 package br.com.nordestech.usuario.infra.persistence.pix;
 
 import br.com.nordestech.usuario.infra.persistence.banco.BancoEntity;
-import br.com.nordestech.usuario.infra.persistence.pagamento.PagamentoEntity;
+import br.com.nordestech.usuario.infra.persistence.usuario.UsuarioEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,14 +21,15 @@ public class PixEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id")
+    private UsuarioEntity usuarioPix;
+
     @OneToOne(mappedBy = "pix", cascade = CascadeType.ALL)
     private BancoEntity banco;
 
     @Column(name = "chave_pix", nullable = false, unique = true)
     private String chavePix;
-
-    @OneToOne(mappedBy = "pix", cascade = CascadeType.ALL)
-    private PagamentoEntity pagamento;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

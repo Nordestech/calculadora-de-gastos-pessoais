@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,22 +17,21 @@ import java.util.UUID;
 @Builder
 public class Usuario {
 
-    private UUID id;
+    private UUID idUsuario;
     private String email;
     private String senha;
     private String nomeCompleto;
+    private String cpf;
     private LocalDate dataNascimento;
-    private UUID receitaId;
-    private Set<UUID> despesasId;
-    private Set<UUID> cartoesId;
     private Set<PerfilEnum> perfis;
 
-    public Usuario(String email, String senha, String nomeCompleto, LocalDate dataNascimento, Set<PerfilEnum> perfis) {
+    public Usuario(String email, String senha, String nomeCompleto, String cpf, LocalDate dataNascimento) {
         this.email = email;
         this.senha = senha;
         this.nomeCompleto = nomeCompleto;
+        this.cpf = cpf;
         this.dataNascimento = dataNascimento;
-        this.perfis = perfis;
+        this.perfis = new HashSet<PerfilEnum>();
     }
 
     protected  Usuario() {

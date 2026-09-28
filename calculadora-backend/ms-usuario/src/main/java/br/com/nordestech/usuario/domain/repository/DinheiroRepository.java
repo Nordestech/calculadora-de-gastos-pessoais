@@ -2,14 +2,17 @@ package br.com.nordestech.usuario.domain.repository;
 
 import br.com.nordestech.usuario.domain.model.Dinheiro;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public interface DinheiroRepository {
 
-    Dinheiro salvar(Dinheiro dinheiro, UUID idUsuario);
+    Dinheiro salvar(Dinheiro dinheiro);
 
-    Dinheiro buscarPorId(UUID id);
+    Dinheiro atualizarSaldo(BigDecimal saldo, UUID idDinheiro);
 
-    void deletarDinheiroPorId(UUID id);
+    Dinheiro buscarPorUsuarioId(UUID idUsuario);
+
+    void deletarDinheiroPorId(UUID idDinheiro);
 
 }

@@ -14,10 +14,6 @@ public class BuscarPixUseCase {
 
     private final PixRepository repository;
 
-    public Pix buscarPixPorId(UUID idPix) {
-        return repository.buscarPorId(idPix);
-    }
-
     public Set<Pix> buscarPixsPorUsuarioId(UUID idUsuario) {
         return repository.buscarPixPorUsuarioId(idUsuario);
     }

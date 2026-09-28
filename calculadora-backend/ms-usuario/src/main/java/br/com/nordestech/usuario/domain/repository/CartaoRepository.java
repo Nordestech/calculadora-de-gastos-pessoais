@@ -2,17 +2,20 @@ package br.com.nordestech.usuario.domain.repository;
 
 import br.com.nordestech.usuario.domain.model.Cartao;
 
+import java.math.BigDecimal;
 import java.util.Set;
 import java.util.UUID;
 
 public interface CartaoRepository {
 
-    Cartao salvar(Cartao cartao, UUID idUsuario);
+    Cartao salvar(Cartao cartao);
 
-    Cartao buscarPorId(UUID id);
+    Cartao atualizarLimiteDisponivel(BigDecimal limiteDisponivel, UUID idCartao);
 
-    Set<Cartao> buscarCartoesPorUsuarioId(UUID id);
+    Cartao atualizarSaldo(BigDecimal saldo, UUID idCartao);
 
-    void deletarCartaoPorId(UUID id);
+    Set<Cartao> buscarCartoesPorUsuarioId(UUID idUsuario);
+
+    void deletarCartaoPorId(UUID idCartao);
 
 }

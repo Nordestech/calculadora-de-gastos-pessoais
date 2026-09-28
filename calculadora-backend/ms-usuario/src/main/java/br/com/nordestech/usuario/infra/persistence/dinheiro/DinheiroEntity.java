@@ -1,6 +1,6 @@
 package br.com.nordestech.usuario.infra.persistence.dinheiro;
 
-import br.com.nordestech.usuario.infra.persistence.pagamento.PagamentoEntity;
+import br.com.nordestech.usuario.infra.persistence.usuario.UsuarioEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table
+@Table(name = "DINHEIRO")
 @AllArgsConstructor
 public class DinheiroEntity {
 
@@ -21,11 +21,11 @@ public class DinheiroEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "valor", precision = 10, scale = 2, nullable = false)
-    private BigDecimal valor;
+    @OneToOne(mappedBy = "dinheiro", cascade = CascadeType.ALL)
+    private UsuarioEntity usuario;
 
-    @OneToOne(mappedBy = "dinheiroPagamento", cascade = CascadeType.ALL)
-    private PagamentoEntity pagamentoDinheiro;
+    @Column(name = "valor", precision = 10, scale = 2, nullable = false)
+    private BigDecimal saldo;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
@@ -34,8 +34,8 @@ public class DinheiroEntity {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public DinheiroEntity(BigDecimal valor) {
+    public DinheiroEntity(BigDecimal saldo) {
         this();
-        this.valor = valor;
+        this.saldo = saldo;
     }
 }

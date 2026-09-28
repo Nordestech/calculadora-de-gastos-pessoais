@@ -13,8 +13,7 @@ public class BuscarDinheiroUseCase {
 
     private final DinheiroRepository repository;
 
-    public Dinheiro buscarDinheiroPorId(UUID idDinheiro) {
-        return repository.buscarPorId(idDinheiro);
+    public Dinheiro buscarDinheiroPorUsuarioId(UUID idUsuario){
+        return repository.buscarPorUsuarioId(idUsuario);
     }
-
 }

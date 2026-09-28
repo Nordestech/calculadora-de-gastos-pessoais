@@ -1,6 +1,9 @@
 package br.com.nordestech.usuario.domain.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
@@ -10,8 +13,15 @@ import java.util.UUID;
 @Builder
 public class Pix {
 
-    private UUID id;
+    private UUID idPix;
     private UUID bancoId;
     private String chavePix;
 
+    public Pix(UUID bancoId, String chavePix) {
+        this.bancoId = bancoId;
+        this.chavePix = chavePix;
+    }
+
+    protected Pix() {
+    }
 }

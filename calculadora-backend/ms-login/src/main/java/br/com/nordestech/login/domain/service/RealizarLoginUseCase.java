@@ -39,7 +39,7 @@ public class RealizarLoginUseCase {
         return new LoginDTO(
                 token,
                 "Bearer",
-                usuario.getId(),
+                usuario.getIdUsuario(),
                 usuario.getPerfis()
         );
     }

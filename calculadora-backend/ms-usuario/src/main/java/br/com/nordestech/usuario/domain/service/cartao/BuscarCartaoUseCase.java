@@ -14,10 +14,6 @@ public class BuscarCartaoUseCase {
 
     private final CartaoRepository repository;
 
-    public Cartao buscarCartaoPorId(UUID idCartao) {
-        return repository.buscarPorId(idCartao);
-    }
-
     public Set<Cartao> buscarCartaosPorUsuarioId(UUID idUsuario) {
         return repository.buscarCartoesPorUsuarioId(idUsuario);
     }
