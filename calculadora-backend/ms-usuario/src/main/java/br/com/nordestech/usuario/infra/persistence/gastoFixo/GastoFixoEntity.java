@@ -1,5 +1,6 @@
 package br.com.nordestech.usuario.infra.persistence.gastoFixo;
 
+import br.com.nordestech.usuario.infra.persistence.abstracts.PagamentoEntity;
 import br.com.nordestech.usuario.infra.persistence.usuario.UsuarioEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,10 @@ public class GastoFixoEntity {
     @Column(name = "tipo_gasto_fixo", nullable = false)
     private String tipoGastoFixo;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "pagamento_id")
+    private PagamentoEntity pagamento;
+
     @Column(name = "valor", precision = 10, scale = 2, nullable = false)
     private BigDecimal valor;
 
@@ -46,10 +51,12 @@ public class GastoFixoEntity {
         this.createdAt = LocalDateTime.now();
     }
 
-    public GastoFixoEntity(String descricao, String tipoGastoFixo, BigDecimal valor, LocalDate dataReferencia) {
+    public GastoFixoEntity(UsuarioEntity usuarioGastosFixos, String descricao, String tipoGastoFixo, PagamentoEntity pagamento, BigDecimal valor, LocalDate dataReferencia) {
         this();
+        this.usuarioGastosFixos = usuarioGastosFixos;
         this.descricao = descricao;
         this.tipoGastoFixo = tipoGastoFixo;
+        this.pagamento = pagamento;
         this.valor = valor;
         this.dataReferencia = dataReferencia;
     }

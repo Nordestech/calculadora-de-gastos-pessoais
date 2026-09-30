@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/login")
+@RequestMapping("/login")
 @Tag(name = "Login", description = "Endpoints para gerenciamento de logins")
 public class LoginController {
 
@@ -33,13 +33,13 @@ public class LoginController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "401", description = "CPF não encontrado no banco de dados e/ou senha errada")
     })
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<LoginResponseDTO> realizarLogin(@Valid @RequestBody LoginRequestDTO dto) {
 
-        log.info("Requisição de cadastro de usuário recebida com sucesso");
+        log.info("Requisição de login de usuário recebida com sucesso");
         LoginDTO loginRealizado = loginUseCase.execute(mapper.toLogin(dto));
 
-        log.info("Usuário cadastrado com sucesso");
+        log.info("Usuário logado com sucesso");
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toLoginResponseDTO(loginRealizado));
     }
 

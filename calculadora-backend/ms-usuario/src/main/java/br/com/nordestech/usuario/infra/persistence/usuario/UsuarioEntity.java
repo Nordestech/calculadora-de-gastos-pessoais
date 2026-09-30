@@ -6,6 +6,8 @@ import br.com.nordestech.usuario.infra.persistence.dinheiro.DinheiroEntity;
 import br.com.nordestech.usuario.infra.persistence.gasto.GastoEntity;
 import br.com.nordestech.usuario.infra.persistence.gastoFixo.GastoFixoEntity;
 import br.com.nordestech.usuario.infra.persistence.pix.PixEntity;
+import br.com.nordestech.usuario.infra.persistence.type.tipoGasto.TipoGastoEntity;
+import br.com.nordestech.usuario.infra.persistence.type.tipoGastoFixo.TipoGastoFixoEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -63,6 +65,12 @@ public class UsuarioEntity {
     @OneToMany(mappedBy = "usuarioGastosFixos", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<GastoFixoEntity> gastosFixos;
 
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private TipoGastoEntity tipoGasto;
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private TipoGastoFixoEntity tipoGastoFixo;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -76,16 +84,23 @@ public class UsuarioEntity {
 
     public UsuarioEntity(String email, String senha, String nomeCompleto, String cpf, LocalDate dataNascimento) {
         this();
+
+        Set<PerfilEnum> perfis = new HashSet<>();
+        perfis.add(PerfilEnum.FREE_ACCOUNT);
+
         this.email = email;
         this.senha = senha;
         this.nomeCompleto = nomeCompleto;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
+        this.perfis = perfis;
         this.pix = new HashSet<PixEntity>();
         this.cartoes = new HashSet<CartaoEntity>();
         this.dinheiro = new DinheiroEntity(BigDecimal.valueOf(0));
         this.gastos = new HashSet<GastoEntity>();
         this.gastosFixos = new HashSet<GastoFixoEntity>();
+        this.tipoGasto = new TipoGastoEntity();
+        this.tipoGastoFixo = new TipoGastoFixoEntity();
     }
 
 }

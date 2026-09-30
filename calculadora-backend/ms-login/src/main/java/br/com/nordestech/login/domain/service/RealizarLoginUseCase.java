@@ -1,10 +1,11 @@
 package br.com.nordestech.login.domain.service;
 
-import br.com.nordestech.login.domain.exception.LoginUnauthorizedException;
+import br.com.nordestech.login.domain.exception.UnauthorizedException;
+import br.com.nordestech.login.domain.exception.enums.ErrorCode;
 import br.com.nordestech.login.domain.model.DTO.LoginDTO;
 import br.com.nordestech.login.domain.model.Login;
 import br.com.nordestech.login.infra.security.JwtTokenService;
-import br.com.nordestech.usuario.domain.exceptions.usuario.UsuarioNotFoundException;
+import br.com.nordestech.usuario.domain.exceptions.ResourceNotFoundException;
 import br.com.nordestech.usuario.domain.model.Usuario;
 import br.com.nordestech.usuario.domain.service.usuario.BuscarUsuarioUseCase;
 import lombok.RequiredArgsConstructor;
@@ -22,19 +23,19 @@ public class RealizarLoginUseCase {
     public LoginDTO execute(Login login) {
 
         Usuario usuario;
+        String token;
 
         try {
             usuario = buscarUsuarioUseCase.buscarUsuarioPorEmail(login.getEmail());
-        } catch (UsuarioNotFoundException e) {
-            throw new LoginUnauthorizedException("E-mail ou senha incorretos");
+        } catch (ResourceNotFoundException e) {
+            throw new UnauthorizedException(ErrorCode.LOGIN_INCORRECT);
         }
 
-        boolean senhaValida = passwordEncoder.matches(login.getSenha(), usuario.getSenha());
-        if (!senhaValida) {
-            throw new LoginUnauthorizedException("E-mail ou senha incorretos");
+        if (passwordEncoder.matches(login.getSenha(), usuario.getSenha())) {
+            token = jwtTokenService.gerarToken(usuario);
+        } else {
+            throw new UnauthorizedException(ErrorCode.LOGIN_INCORRECT);
         }
-
-        String token = jwtTokenService.gerarToken(usuario);
 
         return new LoginDTO(
                 token,

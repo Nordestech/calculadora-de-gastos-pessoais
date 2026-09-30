@@ -22,7 +22,7 @@ public class UsuarioController {
     private final CadastrarUsuarioUseCase cadastrarUsuarioUseCase;
     private final UsuarioDTOMapper usuarioDTOMapper;
 
-    @PostMapping("cadastro")
+    @PostMapping("/cadastro")
     public ResponseEntity<UsuarioResponseDTO> cadastrarUsuario(@RequestBody @Valid UsuarioRequestDTO usuarioRequestDTO) {
 
         Usuario usuario = cadastrarUsuarioUseCase.execute(usuarioDTOMapper.toUsuario(usuarioRequestDTO));

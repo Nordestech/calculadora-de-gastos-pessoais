@@ -20,13 +20,16 @@ public class GastoFixo {
     private String descricao;
     private String tipoGastoFixo;
     private BigDecimal valor;
+    private UUID pagamentoId;
     private LocalDate dataReferencia;
 
-    public GastoFixo(UUID usuarioId, String descricao, String tipoGastoFixo, BigDecimal valor) {
+    public GastoFixo(UUID usuarioId, String descricao, String tipoGastoFixo, BigDecimal valor, UUID pagamentoId, LocalDate dataReferencia) {
         this.usuarioId = usuarioId;
         this.descricao = descricao;
         this.tipoGastoFixo = tipoGastoFixo;
         this.valor = valor;
+        this.pagamentoId = pagamentoId;
+        this.dataReferencia = dataReferencia;
     }
 
     protected GastoFixo() {

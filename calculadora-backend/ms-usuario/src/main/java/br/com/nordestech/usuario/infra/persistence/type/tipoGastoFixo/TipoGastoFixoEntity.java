@@ -1,5 +1,6 @@
 package br.com.nordestech.usuario.infra.persistence.type.tipoGastoFixo;
 
+import br.com.nordestech.usuario.infra.persistence.usuario.UsuarioEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,10 @@ public class TipoGastoFixoEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id")
+    private UsuarioEntity usuario;
+
     @Column(name = "tipos")
     private Set<String> tipos;
 
@@ -30,8 +35,9 @@ public class TipoGastoFixoEntity {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public TipoGastoFixoEntity(Set<String> tipos) {
+    public TipoGastoFixoEntity(UsuarioEntity usuario, Set<String> tipos) {
         this();
+        this.usuario = usuario;
         this.tipos = tipos;
     }
 }

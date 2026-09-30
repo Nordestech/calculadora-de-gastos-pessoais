@@ -5,7 +5,6 @@ import br.com.nordestech.usuario.domain.repository.type.TipoGastoFixoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -14,7 +13,7 @@ public class BuscarTipoGastoFixoUseCase {
 
     private final TipoGastoFixoRepository repository;
 
-    public Set<TipoGastoFixo> buscarTipoGastoFixosPorUsuarioId(UUID idUsuario) {
+    public TipoGastoFixo buscarTipoGastoFixoPorUsuarioId(UUID idUsuario) {
         return repository.buscarTipoGastoFixoPorUsuarioId(idUsuario);
     }
 

@@ -1,7 +1,8 @@
 package br.com.nordestech.usuario.infra.persistence.usuario;
 
-import br.com.nordestech.usuario.domain.exceptions.usuario.UsuarioBadRequestException;
-import br.com.nordestech.usuario.domain.exceptions.usuario.UsuarioNotFoundException;
+import br.com.nordestech.usuario.domain.exceptions.ResourceAlreadyExistsException;
+import br.com.nordestech.usuario.domain.exceptions.ResourceBadRequestException;
+import br.com.nordestech.usuario.domain.exceptions.ResourceNotFoundException;
 import br.com.nordestech.usuario.domain.model.Usuario;
 import br.com.nordestech.usuario.domain.repository.UsuarioRepository;
 import br.com.nordestech.usuario.infra.persistence.usuario.mapper.UsuarioMapper;
@@ -22,6 +23,13 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     @Override
     public Usuario salvar(Usuario usuario) {
+        if (repository.existsUsuarioEntityByEmailContainingIgnoreCase(usuario.getEmail())) {
+            throw new ResourceAlreadyExistsException("Usuario", "email", usuario.getEmail());
+        }
+
+        if (repository.existsUsuarioEntityByCpf(usuario.getCpf())) {
+            throw new ResourceAlreadyExistsException("Usuario", "cpf", usuario.getCpf());
+        }
 
         UsuarioEntity usuarioEntity = new UsuarioEntity(
                 usuario.getEmail(),
@@ -32,12 +40,10 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
         );
 
         return mapper.toUsuario(repository.save(usuarioEntity));
-
     }
 
     @Override
     public Usuario atualizar(Usuario usuario, UUID idUsuario) {
-
         Optional<UsuarioEntity> usuarioEntity = repository.findById(idUsuario);
 
         if (usuarioEntity.isPresent()) {
@@ -48,20 +54,30 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 usuarioToUpdate.setNomeCompleto(usuario.getNomeCompleto());
             }
             if (usuario.getCpf() != null) {
+                if (usuario.getCpf().equals(usuarioToUpdate.getCpf())) {
+                    throw new ResourceBadRequestException("Usuario", "cpf", usuario.getCpf());
+                }
+                if (repository.existsUsuarioEntityByCpf(usuario.getCpf())) {
+                    throw new ResourceAlreadyExistsException("Usuario", "cpf", usuario.getCpf());
+                }
                 usuarioToUpdate.setCpf(usuario.getCpf());
             }
             if (usuario.getDataNascimento() != null) {
                 usuarioToUpdate.setDataNascimento(usuario.getDataNascimento());
             }
             if (usuario.getEmail() != null) {
+                if (usuario.getEmail().equals(usuarioToUpdate.getEmail())) {
+                    throw new ResourceBadRequestException("Usuario", "email", usuario.getEmail());
+                }
+                if (repository.existsUsuarioEntityByEmailContainingIgnoreCase(usuario.getEmail())) {
+                    throw new ResourceAlreadyExistsException("Usuario", "email", usuario.getEmail());
+                }
                 usuarioToUpdate.setEmail(usuario.getEmail());
             }
 
             return mapper.toUsuario(repository.save(usuarioToUpdate));
         }
-
-        throw new UsuarioBadRequestException("Nenhuma alteração realizada. Nenhum campo de atualização válido");
-
+        throw new ResourceBadRequestException("Usuario", "dados de atualização", usuario.toString());
     }
 
     @Override
@@ -72,7 +88,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             return mapper.toUsuario(usuarioEntity.get());
         }
 
-        throw new UsuarioNotFoundException("Nenhum usuário encontrado com o email " + email);
+        throw new ResourceNotFoundException("Usuario", "email", email);
     }
 
     @Override
@@ -83,26 +99,22 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             return mapper.toUsuario(usuarioEntity.get());
         }
 
-        throw new UsuarioNotFoundException("Nenhum usuário encontrado com o id " + idUsuario);
+        throw new ResourceNotFoundException("Usuario", "id", idUsuario);
     }
 
     @Override
     public void deletarUsuarioPorId(UUID idUsuario) {
-
         Optional<UsuarioEntity> usuarioEntity = repository.findById(idUsuario);
 
         if (usuarioEntity.isPresent()) {
             repository.deleteById(idUsuario);
         }
 
-        throw new UsuarioNotFoundException("Nenhum usuário encontrado com o id " + idUsuario);
-
+        throw new ResourceNotFoundException("Usuario", "id", idUsuario);
     }
 
     @Override
     public Page<Usuario> buscarTodosUsuarios(Pageable pageable) {
-
         return repository.findAll(pageable).map(mapper::toUsuario);
-
     }
 }

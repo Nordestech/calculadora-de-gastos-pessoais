@@ -1,6 +1,7 @@
 package br.com.nordestech.login.infra.security;
 
-import br.com.nordestech.login.domain.exception.LoginUnauthorizedException;
+import br.com.nordestech.login.domain.exception.UnauthorizedException;
+import br.com.nordestech.login.domain.exception.enums.ErrorCode;
 import br.com.nordestech.usuario.domain.model.Usuario;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -31,7 +32,7 @@ public class JwtTokenService {
 
         return Jwts.builder()
                 .subject(usuario.getEmail())
-                .claim("id", usuario.getId())
+                .claim("id", usuario.getIdUsuario())
                 .claim("roles", usuario.getPerfis())
                 .issuedAt(agora)
                 .expiration(dataExpiracao)
@@ -48,7 +49,7 @@ public class JwtTokenService {
                     .getPayload()
                     .getSubject();
         } catch (JwtException e) {
-            throw new LoginUnauthorizedException("Token de login expirou");
+            throw new UnauthorizedException(ErrorCode.EXPIRED_TOKEN);
         }
     }
 }

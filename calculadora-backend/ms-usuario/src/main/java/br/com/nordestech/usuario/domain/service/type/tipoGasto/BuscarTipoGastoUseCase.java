@@ -14,7 +14,7 @@ public class BuscarTipoGastoUseCase {
 
     private final TipoGastoRepository repository;
 
-    public Set<TipoGasto> buscarTipoGastosPorUsuarioId(UUID idUsuario) {
+    public TipoGasto buscarTipoGastosPorUsuarioId(UUID idUsuario) {
         return repository.buscarTipoGastoPorUsuarioId(idUsuario);
     }
 

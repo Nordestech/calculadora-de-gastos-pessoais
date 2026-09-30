@@ -1,7 +1,10 @@
 package br.com.nordestech.usuario.infra.persistence.cartao;
 
 import br.com.nordestech.usuario.domain.model.enums.TipoCartao;
+import br.com.nordestech.usuario.infra.persistence.abstracts.PagamentoEntity;
 import br.com.nordestech.usuario.infra.persistence.banco.BancoEntity;
+import br.com.nordestech.usuario.infra.persistence.gasto.GastoEntity;
+import br.com.nordestech.usuario.infra.persistence.gastoFixo.GastoFixoEntity;
 import br.com.nordestech.usuario.infra.persistence.usuario.UsuarioEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,18 +14,13 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "CARTOES")
 @AllArgsConstructor
-public class CartaoEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class CartaoEntity extends PagamentoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id")
@@ -35,12 +33,20 @@ public class CartaoEntity {
     @JoinColumn(name = "banco_id")
     private BancoEntity bancoCartoes;
 
+    @ElementCollection(targetClass = TipoCartao.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "CARTAO_TIPOS", joinColumns = @JoinColumn(name = "cartao_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "tipos_cartao")
     private Set<TipoCartao> tiposCartao;
 
     @Column(name = "limite_disponivel", precision = 10, scale = 2, nullable = false)
     private BigDecimal limiteDisponivel;
+
+    @OneToMany(mappedBy = "pagamento", cascade = CascadeType.ALL)
+    private Set<GastoEntity> gastos;
+
+    @OneToMany(mappedBy = "pagamento", cascade = CascadeType.ALL)
+    private Set<GastoFixoEntity> gastosFixo;
 
     @Column(name = "dia_vencimento")
     private Integer diaVencimento;
@@ -53,12 +59,13 @@ public class CartaoEntity {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public CartaoEntity(String nomeCartao, Set<TipoCartao> tiposCartao, BigDecimal limiteDisponivel, Integer diaVencimento, UsuarioEntity usuarioCartoes) {
+    public CartaoEntity(String nomeCartao, Set<TipoCartao> tiposCartao, BigDecimal limiteDisponivel, Integer diaVencimento, BancoEntity bancoCartoes, UsuarioEntity usuarioCartoes) {
         this();
         this.nomeCartao = nomeCartao;
         this.tiposCartao = tiposCartao;
         this.limiteDisponivel = limiteDisponivel;
         this.diaVencimento = diaVencimento;
+        this.bancoCartoes = bancoCartoes;
         this.usuarioCartoes = usuarioCartoes;
     }
 }

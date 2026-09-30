@@ -5,6 +5,7 @@ import br.com.nordestech.usuario.infra.persistence.pix.PixEntity;
 import br.com.nordestech.usuario.infra.persistence.usuario.UsuarioEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "BANCOS")
 @AllArgsConstructor
+@Builder
 public class BancoEntity {
 
     @Id
@@ -47,8 +49,9 @@ public class BancoEntity {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public BancoEntity(String nomeBanco, BigDecimal saldo) {
+    public BancoEntity(UsuarioEntity usuarioBanco, String nomeBanco, BigDecimal saldo) {
         this();
+        this.usuarioBanco = usuarioBanco;
         this.nomeBanco = nomeBanco;
         this.saldo = saldo;
     }

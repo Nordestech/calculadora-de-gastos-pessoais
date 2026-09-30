@@ -10,4 +10,6 @@ public interface SpringDataJpaUsuarioRepository extends JpaRepository<UsuarioEnt
     boolean existsUsuarioEntityByEmailContainingIgnoreCase(String email);
 
     Optional<UsuarioEntity> findByEmailContainingIgnoreCase(String email);
+
+    boolean existsUsuarioEntityByCpf(String cpf);
 }
