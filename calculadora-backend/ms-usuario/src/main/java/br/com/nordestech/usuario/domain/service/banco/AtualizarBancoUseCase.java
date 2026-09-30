@@ -14,8 +14,20 @@ public class AtualizarBancoUseCase {
 
     private final BancoRepository repository;
 
-    public Banco atualizarSaldo(BigDecimal saldo, UUID idBanco) {
-        return repository.atualizarSaldo(saldo, idBanco);
+    public Banco debitarSaldo(BigDecimal valor, UUID idBanco) {
+        Banco banco = repository.buscarBancoPorId(idBanco);
+
+        banco.debitar(valor);
+
+        return repository.atualizarSaldo(banco.getSaldo(), idBanco);
+    }
+
+    public Banco creditarSaldo(BigDecimal valor, UUID idBanco) {
+        Banco banco = repository.buscarBancoPorId(idBanco);
+
+        banco.creditar(valor);
+
+        return repository.atualizarSaldo(banco.getSaldo(), idBanco);
     }
 
 }

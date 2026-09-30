@@ -2,6 +2,7 @@ package br.com.nordestech.usuario.presentation.usuario.mapper;
 
 import br.com.nordestech.usuario.domain.model.Usuario;
 import br.com.nordestech.usuario.presentation.usuario.rest.request.UsuarioRequestDTO;
+import br.com.nordestech.usuario.presentation.usuario.rest.request.UsuarioUpdateRequestDTO;
 import br.com.nordestech.usuario.presentation.usuario.rest.response.UsuarioResponseDTO;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +26,14 @@ public class UsuarioDTOMapper {
                 .nomeCompleto(dto.nomeCompleto())
                 .cpf(dto.cpf())
                 .dataNascimento(dataLocalDate)
+                .build();
+    }
+
+    public Usuario toUsuario(UsuarioUpdateRequestDTO dto) {
+
+        return Usuario.builder()
+                .email(dto.email())
+                .nomeCompleto(dto.nomeCompleto())
                 .build();
     }
 

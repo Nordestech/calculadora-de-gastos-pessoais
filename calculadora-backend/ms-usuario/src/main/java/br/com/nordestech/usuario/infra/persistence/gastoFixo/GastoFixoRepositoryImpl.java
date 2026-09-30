@@ -59,4 +59,15 @@ public class GastoFixoRepositoryImpl implements GastoFixoRepository {
 
         repository.delete(gastoFixoEntity.get());
     }
+
+    @Override
+    public GastoFixo buscarGastoFixoPorId(UUID idGastoFixo) {
+        Optional<GastoFixoEntity> gastoFixoEntity = repository.findById(idGastoFixo);
+
+        if (gastoFixoEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Gasto Fixo", "id", idGastoFixo);
+        }
+
+        return mapper.toGastoFixo(gastoFixoEntity.get());
+    }
 }

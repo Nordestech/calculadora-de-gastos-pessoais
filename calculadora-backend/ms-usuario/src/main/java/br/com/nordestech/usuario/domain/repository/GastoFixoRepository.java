@@ -12,5 +12,7 @@ public interface GastoFixoRepository {
     Set<GastoFixo> buscarTodosGastoFixosPorUsuarioId(UUID idUsuario);
 
     void deletarGastoFixoPorId(UUID idGastoFixo);
+
+    GastoFixo buscarGastoFixoPorId(UUID idGastoFixo);
     
 }

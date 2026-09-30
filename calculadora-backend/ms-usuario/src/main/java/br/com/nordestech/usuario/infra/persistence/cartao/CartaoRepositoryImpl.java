@@ -32,7 +32,7 @@ public class CartaoRepositoryImpl implements CartaoRepository {
 
         CartaoEntity cartaoEntity = new CartaoEntity(
                 cartao.getNomeCartao(),
-                cartao.getTiposCartao(),
+                cartao.getTipoCartao(),
                 cartao.getLimiteDisponivel(),
                 cartao.getDiaVencimento(),
                 bancoEntity,
@@ -89,5 +89,16 @@ public class CartaoRepositoryImpl implements CartaoRepository {
         }
 
         repository.delete(cartaoEntity.get());
+    }
+
+    @Override
+    public Cartao buscarCartaoPorId(UUID idCartao) {
+        Optional<CartaoEntity> cartaoEntity = repository.findById(idCartao);
+
+        if (cartaoEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Cartao", "id", idCartao);
+        }
+
+        return mapper.toCartao(cartaoEntity.get());
     }
 }

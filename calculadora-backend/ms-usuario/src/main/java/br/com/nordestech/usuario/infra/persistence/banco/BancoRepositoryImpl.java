@@ -70,4 +70,15 @@ public class BancoRepositoryImpl implements BancoRepository {
 
         repository.delete(bancoEntity.get());
     }
+
+    @Override
+    public Banco buscarBancoPorId(UUID idBanco) {
+        Optional<BancoEntity> bancoEntity = repository.findById(idBanco);
+
+        if (bancoEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Banco", "id", idBanco);
+        }
+
+        return mapper.toBanco(repository.save(bancoEntity.get()));
+    }
 }

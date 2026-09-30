@@ -16,4 +16,6 @@ public interface BancoRepository {
 
     void deletarBancoPorId(UUID idBanco);
 
+    Banco buscarBancoPorId(UUID idBanco);
+
 }

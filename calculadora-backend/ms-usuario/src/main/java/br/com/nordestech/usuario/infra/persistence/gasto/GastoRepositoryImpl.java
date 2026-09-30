@@ -48,6 +48,17 @@ public class GastoRepositoryImpl implements GastoRepository {
     }
 
     @Override
+    public Gasto buscarGastoPorId(UUID id) {
+        Optional<GastoEntity> gastoEntity = repository.findById(id);
+
+        if (gastoEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Gasto", "id", id);
+        }
+
+        return mapper.toGasto(gastoEntity.get());
+    }
+
+    @Override
     public Page<Gasto> buscarTodosGastosPorUsuarioId(Pageable pageable, UUID idUsuario) {
         return repository.findAllByUsuarioGastos_Id(idUsuario, pageable).map(mapper::toGasto);
     }

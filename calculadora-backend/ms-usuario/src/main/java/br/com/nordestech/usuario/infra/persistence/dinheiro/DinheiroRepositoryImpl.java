@@ -71,4 +71,15 @@ public class DinheiroRepositoryImpl implements DinheiroRepository {
 
         repository.delete(dinheiroEntity.get());
     }
+
+    @Override
+    public Dinheiro buscarDinheiroPorId(UUID idDinheiro) {
+        Optional<DinheiroEntity> dinheiroEntity = repository.findById(idDinheiro);
+
+        if (dinheiroEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Dinheiro", "id", idDinheiro);
+        }
+
+        return mapper.toDinheiro(dinheiroEntity.get());
+    }
 }

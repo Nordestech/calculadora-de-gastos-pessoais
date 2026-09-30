@@ -15,4 +15,6 @@ public interface DinheiroRepository {
 
     void deletarDinheiroPorId(UUID idDinheiro);
 
+    Dinheiro buscarDinheiroPorId(UUID idDinheiro);
+
 }

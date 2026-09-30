@@ -34,6 +34,11 @@ public class Usuario {
         this.perfis = new HashSet<PerfilEnum>();
     }
 
+    public Usuario(String nomeCompleto, String email) {
+        this.nomeCompleto = nomeCompleto;
+        this.email = email;
+    }
+
     protected  Usuario() {
     }
 }

@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
 
-    SALDO_INSUFICIENTE("ERROR_001", "Saldo insuficiente.");
+    SALDO_INSUFICIENTE("ERROR_001", "Saldo insuficiente"),
+    VALOR_INVALIDO("ERROR_002", "Valor inválido");
 
     private final String code;
     private final String defaultMessage;

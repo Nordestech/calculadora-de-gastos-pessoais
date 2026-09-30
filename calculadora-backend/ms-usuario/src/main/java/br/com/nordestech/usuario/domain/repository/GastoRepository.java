@@ -10,6 +10,8 @@ public interface GastoRepository {
 
     Gasto salvar(Gasto gasto);
 
+    Gasto buscarGastoPorId(UUID id);
+
     Page<Gasto> buscarTodosGastosPorUsuarioId(Pageable pageable, UUID idUsuario);
 
     void deletarGastoPorId(UUID idGasto);

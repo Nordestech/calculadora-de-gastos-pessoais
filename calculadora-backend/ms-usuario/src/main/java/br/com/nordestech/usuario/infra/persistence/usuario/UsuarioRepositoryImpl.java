@@ -53,18 +53,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             if (usuario.getNomeCompleto() != null) {
                 usuarioToUpdate.setNomeCompleto(usuario.getNomeCompleto());
             }
-            if (usuario.getCpf() != null) {
-                if (usuario.getCpf().equals(usuarioToUpdate.getCpf())) {
-                    throw new ResourceBadRequestException("Usuario", "cpf", usuario.getCpf());
-                }
-                if (repository.existsUsuarioEntityByCpf(usuario.getCpf())) {
-                    throw new ResourceAlreadyExistsException("Usuario", "cpf", usuario.getCpf());
-                }
-                usuarioToUpdate.setCpf(usuario.getCpf());
-            }
-            if (usuario.getDataNascimento() != null) {
-                usuarioToUpdate.setDataNascimento(usuario.getDataNascimento());
-            }
+
             if (usuario.getEmail() != null) {
                 if (usuario.getEmail().equals(usuarioToUpdate.getEmail())) {
                     throw new ResourceBadRequestException("Usuario", "email", usuario.getEmail());

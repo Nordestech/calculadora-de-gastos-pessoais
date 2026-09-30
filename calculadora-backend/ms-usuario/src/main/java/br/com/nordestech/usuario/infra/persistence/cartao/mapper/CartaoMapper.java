@@ -14,7 +14,7 @@ public class CartaoMapper {
                 .usuarioId(entity.getUsuarioCartoes().getId())
                 .nomeCartao(entity.getNomeCartao())
                 .bancoId(entity.getBancoCartoes().getId())
-                .tiposCartao(entity.getTiposCartao())
+                .tipoCartao(entity.getTipoCartao())
                 .limiteDisponivel(entity.getLimiteDisponivel())
                 .diaVencimento(entity.getDiaVencimento())
                 .build();

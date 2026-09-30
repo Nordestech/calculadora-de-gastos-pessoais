@@ -18,4 +18,6 @@ public interface CartaoRepository {
 
     void deletarCartaoPorId(UUID idCartao);
 
+    Cartao buscarCartaoPorId(UUID idCartao);
+
 }

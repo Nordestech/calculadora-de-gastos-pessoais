@@ -14,8 +14,22 @@ public class AtualizarDinheiroUseCase {
 
     private final DinheiroRepository repository;
 
-    public Dinheiro atualizarSaldo(BigDecimal saldo, UUID idDinheiro){
-        return repository.atualizarSaldo(saldo, idDinheiro);
+    public Dinheiro debitarSaldo(BigDecimal saldo, UUID idDinheiro){
+
+        Dinheiro dinheiro = repository.buscarDinheiroPorId(idDinheiro);
+
+        dinheiro.debitar(saldo);
+
+        return repository.atualizarSaldo(dinheiro.getSaldo(), idDinheiro);
+    }
+
+    public Dinheiro creditarSaldo(BigDecimal saldo, UUID idDinheiro){
+
+        Dinheiro dinheiro = repository.buscarDinheiroPorId(idDinheiro);
+
+        dinheiro.creditar(saldo);
+
+        return repository.atualizarSaldo(dinheiro.getSaldo(), idDinheiro);
     }
 
 }
