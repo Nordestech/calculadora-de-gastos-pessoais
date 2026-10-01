@@ -73,33 +73,33 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     public Usuario buscarPorEmail(String email) {
         Optional<UsuarioEntity> usuarioEntity = repository.findByEmailContainingIgnoreCase(email);
 
-        if (usuarioEntity.isPresent()) {
-            return mapper.toUsuario(usuarioEntity.get());
+        if (usuarioEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Usuario", "email", email);
         }
 
-        throw new ResourceNotFoundException("Usuario", "email", email);
+        return mapper.toUsuario(usuarioEntity.get());
     }
 
     @Override
     public Usuario buscarPorId(UUID idUsuario) {
         Optional<UsuarioEntity> usuarioEntity = repository.findById(idUsuario);
 
-        if (usuarioEntity.isPresent()) {
-            return mapper.toUsuario(usuarioEntity.get());
+        if (usuarioEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Usuario", "id", idUsuario);
         }
 
-        throw new ResourceNotFoundException("Usuario", "id", idUsuario);
+        return mapper.toUsuario(usuarioEntity.get());
     }
 
     @Override
     public void deletarUsuarioPorId(UUID idUsuario) {
         Optional<UsuarioEntity> usuarioEntity = repository.findById(idUsuario);
 
-        if (usuarioEntity.isPresent()) {
-            repository.deleteById(idUsuario);
+        if (usuarioEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Usuario", "id", idUsuario);
         }
 
-        throw new ResourceNotFoundException("Usuario", "id", idUsuario);
+        repository.deleteById(idUsuario);
     }
 
     @Override

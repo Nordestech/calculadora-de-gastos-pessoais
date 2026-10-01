@@ -21,13 +21,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/usuario")
+@RequestMapping("/api/usuario")
 @Slf4j
 @Tag(name = "Usuário", description = "Endpoints para gerenciamento do usuário")
 public class UsuarioController {
@@ -40,7 +41,7 @@ public class UsuarioController {
 
     @Operation(summary = "Cadastra um novo usuário", description = "Cria um registro de usuário na base PostgreSQL")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Morador criado com sucesso"),
+            @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados de requisição inválidos"),
             @ApiResponse(responseCode = "409", description = "Dados já existentes no banco de dados")
     })
@@ -52,19 +53,23 @@ public class UsuarioController {
 
         log.info("Usuário cadastrado com sucesso: {}", usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTOMapper.toUsuarioResponseDTO(usuario));
+
     }
 
     @Operation(summary = "Busca todos os usuários", description = "Retorna todos os usuários cadastrados na base PostgreSQL")
     @GetMapping
     public ResponseEntity<Page<UsuarioResponseDTO>> buscarUsuarios(
-            @PageableDefault(sort = "nome_completo") Pageable pageable) {
+            @PageableDefault(sort = "nomeCompleto") Pageable pageable) {
 
         log.info("Request de buscar todos usuários recebida: {}", pageable);
         Page<Usuario> usuarios = buscarUsuarioUseCase.buscarTodosUsuarios(pageable);
+
+        log.info("Convertendo os usuários para response: {}", usuarios);
         Page<UsuarioResponseDTO> usuarioResponseDTOS = usuarios.map(usuarioDTOMapper::toUsuarioResponseDTO);
 
-        log.info("Usuários encontrados com sucesso: {}", usuarioResponseDTOS);
+        log.info("Usuários encontrados e convertidos com sucesso: {}", usuarioResponseDTOS);
         return ResponseEntity.status(HttpStatus.OK).body(usuarioResponseDTOS);
+
     }
 
     @Operation(summary = "Busca um usuário pelo id",
@@ -73,7 +78,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado com o id fornecido")
     })
-    @GetMapping("/{id}")
+    @GetMapping("/buscar/{id}")
     public ResponseEntity<UsuarioResponseDTO> buscarUsuarioPorId(@PathVariable("id") String usuarioId) {
 
         log.info("Requisição de buscar usuário por id recebida: {}", usuarioId);
@@ -81,6 +86,7 @@ public class UsuarioController {
 
         log.info("Usuário encontrado com sucesso: {}", usuario);
         return ResponseEntity.status(HttpStatus.OK).body(usuarioDTOMapper.toUsuarioResponseDTO(usuario));
+
     }
 
     @Operation(summary = "Busca um usuário pelo e-mail",
@@ -98,6 +104,7 @@ public class UsuarioController {
 
         log.info("Usuário encontrado com sucesso: {}", usuario);
         return ResponseEntity.status(HttpStatus.OK).body(usuarioDTOMapper.toUsuarioResponseDTO(usuario));
+
     }
 
     @Operation(summary = "Deleta um usuário pelo id",
@@ -106,7 +113,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado com o id fornecido")
     })
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletarUsuarioPorId(@PathVariable("id") String usuarioId) {
 
         log.info("Request de deletar usuário por id recebida: {}", usuarioId);
@@ -114,6 +121,7 @@ public class UsuarioController {
 
         log.info("Usuário deletado com sucesso");
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
     }
 
     @Operation(summary = "Atualiza um usuário",
@@ -123,7 +131,8 @@ public class UsuarioController {
             @ApiResponse(responseCode = "400", description = "Dados de requisição inválidos"),
             @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado com o id fornecido")
     })
-    @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyRole('FREE_ACCOUNT', 'PREMIUM_ACCOUNT')")
+    @PatchMapping("/atualizar/{id}")
     public ResponseEntity<UsuarioResponseDTO> atualizarUsuarioPorId(@PathVariable("id") String usuarioId, @RequestBody UsuarioUpdateRequestDTO usuarioUpdateRequestDTO) {
 
         log.info("Requisição de atualizar usuário recebida: id {}, usuário {}", usuarioId, usuarioUpdateRequestDTO);
@@ -131,6 +140,7 @@ public class UsuarioController {
 
         log.info("Usuario atualizado com sucesso: {}", usuario);
         return ResponseEntity.status(HttpStatus.OK).body(usuarioDTOMapper.toUsuarioResponseDTO(usuario));
+
     }
 
 }

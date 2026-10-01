@@ -33,7 +33,7 @@ public class BancoEntity {
     @Column(name = "nome_banco")
     private String nomeBanco;
 
-    @Column(name = "saldo", precision = 10, scale = 2, nullable = false)
+    @Column(name = "saldo", precision = 10, scale = 2)
     private BigDecimal saldo;
 
     @OneToOne(mappedBy = "banco")

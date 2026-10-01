@@ -30,4 +30,8 @@ public class AtualizarBancoUseCase {
         return repository.atualizarSaldo(banco.getSaldo(), idBanco);
     }
 
+    public Banco atualizarSaldo(BigDecimal valor, UUID idBanco) {
+        return repository.atualizarSaldo(valor, idBanco);
+    }
+
 }
