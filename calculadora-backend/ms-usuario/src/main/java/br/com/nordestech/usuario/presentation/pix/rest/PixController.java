@@ -53,7 +53,7 @@ public class PixController {
 
     }
 
-    @Operation(summary = "Busca todos os bancos por usuário", description = "Retorna todos os bancos, por usuário, cadastrados na base PostgreSQL")
+    @Operation(summary = "Busca todos os pix por usuário", description = "Retorna todos os pix, por usuário, cadastrados na base PostgreSQL")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pix encontrado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado com o id fornecido")
