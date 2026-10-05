@@ -114,6 +114,10 @@ public class BancoController {
     }
 
     @Operation(summary = "Busca todos os bancos por usuário", description = "Retorna todos os bancos, por usuário, cadastrados na base PostgreSQL")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bancos encontrado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado com o id fornecido")
+    })
     @GetMapping("/buscar/{id}")
     @PreAuthorize("hasAnyRole('FREE_ACCOUNT', 'PREMIUM_ACCOUNT', 'ADMIN', 'MASTER')")
     public ResponseEntity<Set<BancoResponseDTO>> buscarBancosPorUsuario(@PathVariable("id") String usuarioId) {
