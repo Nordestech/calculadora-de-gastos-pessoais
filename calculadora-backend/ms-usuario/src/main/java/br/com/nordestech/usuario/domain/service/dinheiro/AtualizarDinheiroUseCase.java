@@ -32,4 +32,10 @@ public class AtualizarDinheiroUseCase {
         return repository.atualizarSaldo(dinheiro.getSaldo(), idDinheiro);
     }
 
+    public Dinheiro atualizarSaldo(Dinheiro dinheiro, UUID idDinheiro){
+
+        return repository.atualizarSaldo(dinheiro.getSaldo(), idDinheiro);
+
+    }
+
 }
