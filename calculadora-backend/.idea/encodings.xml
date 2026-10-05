@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/application/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/application/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-assinatura/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-assinatura/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-login/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-login/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-usuario/src/main/java" charset="UTF-8" />

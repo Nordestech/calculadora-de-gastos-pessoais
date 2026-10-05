@@ -12,6 +12,7 @@
         <module>application</module>
         <module>ms-usuario</module>
         <module>ms-login</module>
+        <module>ms-assinatura</module>
     </modules>
 
     <properties>
