@@ -26,9 +26,7 @@ public class AssinaturaController {
             @RequestBody @Valid PayloadRequestDTO payloadRequestDTO){
 
         log.info("Request de checkout recebida com sucesso: {}", payloadRequestDTO);
-        CheckoutResponseDTO checkoutResponseDTO = checkoutService.executeCheckout(payloadRequestDTO);
-
-
+        CheckoutResponseDTO checkoutResponseDTO = checkoutService.executeCheckout(payloadRequestDTO, usuarioId);
 
         log.info("Checkout criado com sucesso: {}", checkoutResponseDTO);
         return ResponseEntity.status(HttpStatus.OK).body(checkoutResponseDTO);

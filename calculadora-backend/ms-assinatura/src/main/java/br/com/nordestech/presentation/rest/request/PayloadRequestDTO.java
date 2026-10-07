@@ -17,14 +17,6 @@ public record PayloadRequestDTO(
         @Valid
         List<ItemDTO> items,
 
-        @NotBlank(message = "order_nsu é obrigatório")
-        @JsonProperty("order_nsu")
-        String orderNsu,
-
-        @NotBlank(message = "redirect_url é obrigatório")
-        @JsonProperty("redirect_url")
-        String redirectUrl,
-
         @NotNull(message = "customer é obrigatório")
         @JsonProperty("customer")
         @Valid
