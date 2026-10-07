@@ -5,6 +5,7 @@ import br.com.nordestech.usuario.infra.persistence.cartao.CartaoEntity;
 import br.com.nordestech.usuario.infra.persistence.dinheiro.DinheiroEntity;
 import br.com.nordestech.usuario.infra.persistence.gasto.GastoEntity;
 import br.com.nordestech.usuario.infra.persistence.gastoFixo.GastoFixoEntity;
+import br.com.nordestech.usuario.infra.persistence.order.OrderEntity;
 import br.com.nordestech.usuario.infra.persistence.pix.PixEntity;
 import br.com.nordestech.usuario.infra.persistence.type.tipoGasto.TipoGastoEntity;
 import br.com.nordestech.usuario.infra.persistence.type.tipoGastoFixo.TipoGastoFixoEntity;
@@ -64,6 +65,9 @@ public class UsuarioEntity {
 
     @OneToMany(mappedBy = "usuarioGastosFixos", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<GastoFixoEntity> gastosFixos;
+
+    @OneToMany(mappedBy = "usuarioOrders", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<OrderEntity> orders;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private TipoGastoEntity tipoGasto;

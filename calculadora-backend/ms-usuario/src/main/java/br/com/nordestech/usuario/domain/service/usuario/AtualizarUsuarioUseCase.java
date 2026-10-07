@@ -13,9 +13,15 @@ public class AtualizarUsuarioUseCase {
 
     private final UsuarioRepository repository;
 
-    public Usuario execute(Usuario usuario, UUID usuarioId) {
+    public Usuario atualizarDados(Usuario usuario, UUID usuarioId) {
 
         return repository.atualizar(usuario, usuarioId);
+
+    }
+
+    public Usuario atualizarAssinatura(String orderNsu) {
+
+        return repository.atualizarAssinatura(orderNsu);
 
     }
 

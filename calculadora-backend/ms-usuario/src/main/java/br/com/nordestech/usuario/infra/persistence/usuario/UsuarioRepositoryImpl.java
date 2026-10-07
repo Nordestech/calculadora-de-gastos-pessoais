@@ -4,7 +4,11 @@ import br.com.nordestech.usuario.domain.exceptions.ResourceAlreadyExistsExceptio
 import br.com.nordestech.usuario.domain.exceptions.ResourceBadRequestException;
 import br.com.nordestech.usuario.domain.exceptions.ResourceNotFoundException;
 import br.com.nordestech.usuario.domain.model.Usuario;
+import br.com.nordestech.usuario.domain.model.enums.PerfilEnum;
+import br.com.nordestech.usuario.domain.model.enums.StatusPayment;
 import br.com.nordestech.usuario.domain.repository.UsuarioRepository;
+import br.com.nordestech.usuario.infra.persistence.order.OrderEntity;
+import br.com.nordestech.usuario.infra.persistence.order.SpringDataJpaOrderRepository;
 import br.com.nordestech.usuario.infra.persistence.usuario.mapper.UsuarioMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Component
@@ -19,6 +24,7 @@ import java.util.UUID;
 public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     private final SpringDataJpaUsuarioRepository repository;
+    private final SpringDataJpaOrderRepository orderRepository;
     private final UsuarioMapper mapper;
 
     @Override
@@ -105,5 +111,26 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     @Override
     public Page<Usuario> buscarTodosUsuarios(Pageable pageable) {
         return repository.findAll(pageable).map(mapper::toUsuario);
+    }
+
+    @Override
+    public Usuario atualizarAssinatura(String orderNsu) {
+        Optional<OrderEntity> orderEntity = orderRepository.findOrderEntityByNsu(orderNsu);
+
+        if (orderEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Order", "orderNsu", orderNsu);
+        }
+
+        UsuarioEntity usuario = orderEntity.get().getUsuarioOrders();
+
+        if (orderEntity.get().getStatusPayment() == StatusPayment.APPROVED) {
+            Set<PerfilEnum> perfis = usuario.getPerfis();
+            perfis.add(PerfilEnum.PREMIUM_ACCOUNT);
+            usuario.setPerfis(perfis);
+
+            return mapper.toUsuario(repository.save(usuario));
+        }
+
+        return mapper.toUsuario(usuario);
     }
 }

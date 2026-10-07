@@ -20,4 +20,6 @@ public interface UsuarioRepository {
 
     Page<Usuario> buscarTodosUsuarios(Pageable pageable);
 
+    Usuario atualizarAssinatura(String orderNsu);
+
 }

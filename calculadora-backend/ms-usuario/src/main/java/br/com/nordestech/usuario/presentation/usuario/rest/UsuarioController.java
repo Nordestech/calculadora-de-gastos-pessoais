@@ -136,7 +136,7 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponseDTO> atualizarUsuarioPorId(@PathVariable("id") String usuarioId, @RequestBody UsuarioUpdateRequestDTO usuarioUpdateRequestDTO) {
 
         log.info("Requisição de atualizar usuário recebida: id {}, usuário {}", usuarioId, usuarioUpdateRequestDTO);
-        Usuario usuario = atualizarUsuarioUseCase.execute(usuarioDTOMapper.toUsuario(usuarioUpdateRequestDTO), UUID.fromString(usuarioId));
+        Usuario usuario = atualizarUsuarioUseCase.atualizarDados(usuarioDTOMapper.toUsuario(usuarioUpdateRequestDTO), UUID.fromString(usuarioId));
 
         log.info("Usuario atualizado com sucesso: {}", usuario);
         return ResponseEntity.status(HttpStatus.OK).body(usuarioDTOMapper.toUsuarioResponseDTO(usuario));
