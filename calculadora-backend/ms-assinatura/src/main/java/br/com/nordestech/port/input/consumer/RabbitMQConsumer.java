@@ -19,10 +19,13 @@ public class RabbitMQConsumer {
     @RabbitListener(queues = ConsumerRabbitConfig.QUEUE_PAYMENT_APPROVED)
     public void checkPaymentApproved(PaymentApprovedDTO paymentApprovedDTO) {
 
-        atualizarOrderUseCase.execute(paymentApprovedDTO.orderNsu(), StatusPayment.APPROVED);
+        atualizarOrderUseCase.execute(
+                paymentApprovedDTO.orderNsu(),
+                StatusPayment.APPROVED
+        );
 
-        atualizarUsuarioUseCase.atualizarAssinatura(paymentApprovedDTO.orderNsu());
-
+        atualizarUsuarioUseCase.atualizarAssinatura(
+                paymentApprovedDTO.orderNsu()
+        );
     }
-
 }
