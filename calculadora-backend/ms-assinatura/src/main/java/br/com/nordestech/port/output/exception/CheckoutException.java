@@ -6,7 +6,7 @@ public class CheckoutException extends RuntimeException {
             String resourceName,
             String message
     ) {
-        super(String.format("%s durante o checkout: '%s'", resourceName, message));
+        super(String.format("Erro durante o processamento da API %s: '%s'", resourceName, message));
     }
 
 }

@@ -1,6 +1,9 @@
 package br.com.nordestech.application;
 
 import br.com.nordestech.login.domain.exception.UnauthorizedException;
+import br.com.nordestech.port.output.exception.CheckoutException;
+import br.com.nordestech.port.output.exception.PaymentStatusException;
+import br.com.nordestech.port.output.exception.PaymentStatusNotFoundException;
 import br.com.nordestech.usuario.domain.exceptions.BusinessRuleException;
 import br.com.nordestech.usuario.domain.exceptions.ResourceAlreadyExistsException;
 import br.com.nordestech.usuario.domain.exceptions.ResourceBadRequestException;
@@ -86,6 +89,46 @@ public class GlobalHandlerException {
         problemDetail.setProperty("error_code", ex.getErrorCode().getCode());
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(problemDetail);
+    }
+
+    /**
+     * Exceptions de tratamento para o {@code ms-assinatura}
+     */
+
+    @ExceptionHandler(CheckoutException.class)
+    public ResponseEntity<ProblemDetail> handleCheckoutException(CheckoutException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()
+        );
+
+        problemDetail.setTitle("Erro no checkout");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
+
+    @ExceptionHandler(PaymentStatusException.class)
+    public ResponseEntity<ProblemDetail> handlePaymentStatusException(PaymentStatusException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()
+        );
+
+        problemDetail.setTitle("Erro no Payment Status");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
+
+    @ExceptionHandler(PaymentStatusNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handlePaymentStatusNotFoundException(PaymentStatusNotFoundException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                ex.getMessage()
+        );
+
+        problemDetail.setTitle("Erro no Payment Status");
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
 
     /**
