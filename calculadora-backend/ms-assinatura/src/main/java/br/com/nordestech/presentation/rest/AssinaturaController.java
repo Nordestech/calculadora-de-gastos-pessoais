@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,6 +33,7 @@ public class AssinaturaController {
             @ApiResponse(responseCode = "400", description = "Erro durante o fetch da api de pagamentos"),
             @ApiResponse(responseCode = "400", description = "Dados de requisição inválidos")
     })
+    @PreAuthorize("hasAnyRole('FREE_ACCOUNT', 'PREMIUM_ACCOUNT')")
     @PostMapping("/checkout/{id}")
     public ResponseEntity<CheckoutResponseDTO> checkoutLink(
             @PathVariable("id") String usuarioId,
@@ -51,6 +53,7 @@ public class AssinaturaController {
             @ApiResponse(responseCode = "400", description = "Erro durante o fetch da api de pagamentos"),
             @ApiResponse(responseCode = "404", description = "Pagamento não encontrado na api")
     })
+    @PreAuthorize("hasAnyRole('FREE_ACCOUNT', 'PREMIUM_ACCOUNT')")
     @GetMapping("/status/{orderNsu}")
     public ResponseEntity<PaymentStatusResponseDTO> checkPaymentStatus(@PathVariable("orderNsu") String orderNsu) {
 
