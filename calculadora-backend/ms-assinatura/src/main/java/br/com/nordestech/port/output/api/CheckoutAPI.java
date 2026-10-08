@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 )
 public interface CheckoutAPI {
 
-    @PostMapping("/new")
+    @PostMapping("/create")
     CheckoutResponseDTO createCheckoutURL(@RequestBody Payload payload);
 
 }
