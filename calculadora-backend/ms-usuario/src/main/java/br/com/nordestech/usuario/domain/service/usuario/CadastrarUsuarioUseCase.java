@@ -3,6 +3,8 @@ package br.com.nordestech.usuario.domain.service.usuario;
 import br.com.nordestech.usuario.domain.model.Usuario;
 import br.com.nordestech.usuario.domain.model.enums.PerfilEnum;
 import br.com.nordestech.usuario.domain.repository.UsuarioRepository;
+import br.com.nordestech.usuario.port.output.dto.EmailHtmlRequest;
+import br.com.nordestech.usuario.port.output.publisher.WelcomeEmailEventPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ public class CadastrarUsuarioUseCase {
 
     private final UsuarioRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final WelcomeEmailEventPublisher eventPublisher;
 
     public Usuario execute(Usuario usuario) {
 
@@ -29,8 +32,17 @@ public class CadastrarUsuarioUseCase {
 
         usuario.setPerfis(perfis);
 
-        return repository.salvar(usuario);
+        Usuario usuarioSalvo = repository.salvar(usuario);
 
+        EmailHtmlRequest emailHtmlRequest = EmailHtmlRequest.builder()
+                .to(usuario.getEmail())
+                .nomeCompleto(usuario.getNomeCompleto())
+                .subject(String.format("Seja bem-vindo, %s!", usuario.getNomeCompleto()))
+                .build();
+
+        eventPublisher.publishPaymentApprovedEvent(emailHtmlRequest);
+
+        return usuarioSalvo;
     }
 
 }
